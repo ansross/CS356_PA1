@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <cctype>
 #include <iterator>
+#include <fstream>
+
+
 using namespace std;
 
 bool DEBUG = true;
@@ -129,13 +132,40 @@ string transpose(string &sentence, string &key){
 
 }
 
+string getPlaintext(){
+	cout<<"Please enter the name of a file containing the sentence to be encrypted"<<endl;
+	string plaintextFileName;
+	cin>>plaintextFileName;
+	ifstream file(plaintextFileName.c_str());
+	string plainText;
+	if(file.is_open()){
+		getline(file, plainText);
+		if(DEBUG){
+			cout<<"plaintext: "<<plainText<<endl;
+		}
+		file.close();
+	}
+
+	return plainText;
+
+
+}
+
 int main(){
     string sampleText = "be at the third pillar from the left outside the lyceum theatre tonight at seven.";
 	string keyOne="";
 	string keyTwo="";
 	getKey(keyOne, 1);
 	getKey(keyTwo, 2);
-	string firstTranspostion = transpose(sampleText,keyOne);
+
+
+	string plaintext = getPlaintext();
+	cout<<"plaintext: " <<plaintext<<endl;
+
+	cout<<"first transposition: " << endl;
+	string firstTranspostion = transpose(plaintext,keyOne);
+	cout<<"second transposition: "<<endl;
+	string secondTransposition = transpose(firstTranspostion, keyTwo);
 	return 0;
 	
 }
